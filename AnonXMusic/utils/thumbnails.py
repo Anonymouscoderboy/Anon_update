@@ -29,7 +29,7 @@ def clear(text):
     return title.strip()
 
 
-async def get_thumb(videoid):
+async def get_thumb(videoid, group_dp, group_name, user_dp, user_name):
     if os.path.isfile(f"cache/{videoid}.png"):
         return f"cache/{videoid}.png"
 
@@ -110,6 +110,43 @@ async def get_thumb(videoid):
             (255, 255, 255),
             font=arial,
         )
+
+        # Add group circle
+        group_dp_img = Image.open(group_dp)
+        group_dp_img = group_dp_img.resize((50, 50))
+        group_dp_img = group_dp_img.convert("RGBA")
+        background.paste(group_dp_img, (10, 10), group_dp_img)
+        draw.ellipse(
+            [(10, 10), (60, 60)],
+            outline="white",
+            fill="white",
+            width=5,
+        )
+        draw.text(
+            (70, 20),
+            group_name,
+            (255, 255, 255),
+            font=arial,
+        )
+
+        # Add user circle
+        user_dp_img = Image.open(user_dp)
+        user_dp_img = user_dp_img.resize((50, 50))
+        user_dp_img = user_dp_img.convert("RGBA")
+        background.paste(user_dp_img, (1210, 10), user_dp_img)
+        draw.ellipse(
+            [(1210, 10), (1260, 60)],
+            outline="white",
+            fill="white",
+            width=5,
+        )
+        draw.text(
+            (1080, 20),
+            user_name,
+            (255, 255, 255),
+            font=arial,
+        )
+
         try:
             os.remove(f"cache/thumb{videoid}.png")
         except:
